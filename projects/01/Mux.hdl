@@ -6,15 +6,9 @@
 /**
  * Multiplexor. If sel == 1 then out = b else out = a.
 
-    sel   a     b     out       sel && b  !sel && a
-    0     0     0     0         0         0
-    0     0     1     0         0         0
-    0     1     0     1         0         1
-    0     1     1     1         0         1
-    1     0     0     0         0         0
-    1     0     1     1         1         0
-    1     1     0     0         0         0
-    1     1     1     1         1         0
+
+// @see 数据选择器MUX（二选一）你们是怎么想出来的呢？ - 知乎
+// https://www.zhihu.com/question/29853575/answer/1596113530
 
 Or(
     And(
@@ -32,8 +26,8 @@ CHIP Mux {
 
     PARTS:
     // Put your code here:+
-    Not(in=sel, out=nsel);
-    And(a=a, b=nsel, out=t0);
-    And(a=b, b=sel, out=t1);
-    Or(a=t0, b=t1, out=out);
+    Not(in=sel, out=nsel);  // Not(sel)
+    And(a=a, b=nsel, out=t0); // (a And Not(sel))
+    And(a=b, b=sel, out=t1); // (b And sel)
+    Or(a=t0, b=t1, out=out); // (a And Not(sel)) Or (b And sel)
 }
